@@ -4,13 +4,7 @@ let
 
   initText =
     (builtins.readFile ./init)
-    + ''
-
-      # ── autostart ───────────────────────────────────────────────────────────────
-      waybar &
-      mako &
-      wl-paste --watch cliphist store &
-    ''
+    + (builtins.readFile ./autostart)
     + lib.concatMapStrings (cmd: "${cmd}\n") cfg.extraAutostart;
 in
 {
