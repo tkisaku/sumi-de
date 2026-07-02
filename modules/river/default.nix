@@ -7,7 +7,7 @@ in
     editor = lib.mkOption {
       type        = lib.types.str;
       default     = "nano";
-      description = "Editor command used by the scratch buffer keybindings (Super+I / Super+Shift+I).";
+      description = "Editor command used by Super+I floating scratch buffer.";
     };
 
     browser = lib.mkOption {
@@ -38,20 +38,17 @@ in
       executable = true;
     };
 
-    xdg.configFile."river/autostart.sh" = {
-      text       = (builtins.readFile ./scripts/autostart.sh)
-                   + lib.concatMapStrings (cmd: "${cmd}\n") cfg.extraAutostart;
+    xdg.configFile."river/scripts/editor-copy-float.sh" = {
+      text = builtins.replaceStrings
+        [ "foot --app-id floating-editor -- nano" ]
+        [ "foot --app-id floating-editor -- ${cfg.editor}" ]
+        (builtins.readFile ./scripts/editor-copy-float.sh);
       executable = true;
     };
 
-    xdg.configFile."river/scripts/editor-copy.sh" = {
-      text = ''
-        #!/usr/bin/env bash
-        tmp=$(mktemp --suffix=.txt)
-        foot -- ${cfg.editor} "$tmp"
-        [ -s "$tmp" ] && wl-copy < "$tmp"
-        rm -f "$tmp"
-      '';
+    xdg.configFile."river/autostart.sh" = {
+      text       = (builtins.readFile ./scripts/autostart.sh)
+                   + lib.concatMapStrings (cmd: "${cmd}\n") cfg.extraAutostart;
       executable = true;
     };
   };
