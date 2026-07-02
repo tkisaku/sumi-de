@@ -26,5 +26,15 @@ in
                    + lib.concatMapStrings (cmd: "${cmd}\n") cfg.extraAutostart;
       executable = true;
     };
+
+    xdg.configFile."river/scripts/editor-insert.sh" = {
+      source     = ./scripts/editor-insert.sh;
+      executable = true;
+    };
+
+    xdg.configFile."river/scripts/editor-copy.sh" = {
+      source     = ./scripts/editor-copy.sh;
+      executable = true;
+    };
   };
 }

@@ -8,9 +8,13 @@ riverctl default-layout rivertile
 rivertile -main-ratio 0.6 -main-count 1 &
 
 # ── apps ────────────────────────────────────────────────────────────────────
+RIVER_SCRIPTS="${XDG_CONFIG_HOME:-$HOME/.config}/river/scripts"
+
 riverctl map normal $MOD Return  spawn foot
 riverctl map normal $MOD Space   spawn fuzzel
 riverctl map normal $MOD B       spawn firefox
+riverctl map normal $MOD I       spawn "$RIVER_SCRIPTS/editor-insert.sh"
+riverctl map normal $MOD+Shift I spawn "$RIVER_SCRIPTS/editor-copy.sh"
 riverctl map normal $MOD V       spawn 'cliphist list | fuzzel --dmenu | cliphist decode | wl-copy'
 
 # ── session ─────────────────────────────────────────────────────────────────
