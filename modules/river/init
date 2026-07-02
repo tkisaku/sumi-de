@@ -78,14 +78,3 @@ riverctl border-width 2
 
 # ── input ───────────────────────────────────────────────────────────────────
 riverctl set-repeat 50 300
-
-# ── input method ────────────────────────────────────────────────────────────
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XMODIFIERS=@im=fcitx
-
-# ── autostart ───────────────────────────────────────────────────────────────
-waybar &
-mako &
-wl-paste --watch cliphist store &
-fcitx5 --replace -d &

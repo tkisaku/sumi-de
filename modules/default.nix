@@ -7,6 +7,5 @@
     ./fuzzel
     ./waybar
     ./mako.nix
-    ./fcitx5
   ];
 }
