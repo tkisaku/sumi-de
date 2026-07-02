@@ -83,5 +83,9 @@ riverctl border-width 2
 # ── input ───────────────────────────────────────────────────────────────────
 riverctl set-repeat 50 300
 
+# ── environment — export Wayland vars to systemd/dbus for portal services ───
+systemctl --user import-environment WAYLAND_DISPLAY DISPLAY
+dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY
+
 # ── autostart ───────────────────────────────────────────────────────────────
 . "$(dirname "$0")/autostart.sh"
