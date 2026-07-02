@@ -83,3 +83,4 @@ riverctl set-repeat 50 300
 waybar &
 mako &
 wl-paste --watch cliphist store &
+fcitx5 --replace -d &
