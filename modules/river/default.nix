@@ -3,8 +3,8 @@ let
   cfg = config."sumi-de";
 
   initText =
-    (builtins.readFile ./init)
-    + (builtins.readFile ./autostart)
+    (builtins.readFile ./scripts/init.sh)
+    + (builtins.readFile ./scripts/autostart.sh)
     + lib.concatMapStrings (cmd: "${cmd}\n") cfg.extraAutostart;
 in
 {
