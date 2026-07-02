@@ -5,6 +5,7 @@
     grim        # screenshot (region via slurp)
     slurp       # region selector
     wl-clipboard # clipboard (wl-copy / wl-paste)
+    cliphist    # clipboard history
 
     ## Audio / brightness
     pamixer

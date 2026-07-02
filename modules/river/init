@@ -10,6 +10,7 @@ rivertile -main-ratio 0.6 -main-count 1 &
 # ── apps ────────────────────────────────────────────────────────────────────
 riverctl map normal $MOD Return  spawn foot
 riverctl map normal $MOD Space   spawn fuzzel
+riverctl map normal $MOD V       spawn 'cliphist list | fuzzel --dmenu | cliphist decode | wl-copy'
 
 # ── session ─────────────────────────────────────────────────────────────────
 riverctl map normal $MOD+Shift E exit
@@ -81,3 +82,4 @@ riverctl set-repeat 50 300
 # ── autostart ───────────────────────────────────────────────────────────────
 waybar &
 mako &
+wl-paste --watch cliphist store &
