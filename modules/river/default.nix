@@ -1,11 +1,6 @@
 { config, lib, pkgs, ... }:
 let
   cfg = config."sumi-de";
-
-  initText =
-    (builtins.readFile ./scripts/init.sh)
-    + (builtins.readFile ./scripts/autostart.sh)
-    + lib.concatMapStrings (cmd: "${cmd}\n") cfg.extraAutostart;
 in
 {
   options."sumi-de".extraAutostart = lib.mkOption {
@@ -22,7 +17,13 @@ in
     home.packages = [ pkgs.river-classic ];
 
     xdg.configFile."river/init" = {
-      text       = initText;
+      source     = ./scripts/init.sh;
+      executable = true;
+    };
+
+    xdg.configFile."river/autostart.sh" = {
+      text       = (builtins.readFile ./scripts/autostart.sh)
+                   + lib.concatMapStrings (cmd: "${cmd}\n") cfg.extraAutostart;
       executable = true;
     };
   };
