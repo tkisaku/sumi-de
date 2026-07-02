@@ -7,5 +7,6 @@
 
   outputs = { self, nixpkgs, ... }: {
     homeManagerModules.default = import ./modules;
+    nixosModules.default = import ./nixos;
   };
 }
