@@ -44,17 +44,6 @@ in
       executable = true;
     };
 
-    xdg.configFile."river/scripts/editor-insert.sh" = {
-      text = ''
-        #!/usr/bin/env bash
-        tmp=$(mktemp --suffix=.txt)
-        foot -- ${cfg.editor} "$tmp"
-        [ -s "$tmp" ] && wtype - < "$tmp"
-        rm -f "$tmp"
-      '';
-      executable = true;
-    };
-
     xdg.configFile."river/scripts/editor-copy.sh" = {
       text = ''
         #!/usr/bin/env bash
