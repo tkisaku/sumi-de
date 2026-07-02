@@ -3,21 +3,38 @@ let
   cfg = config."sumi-de";
 in
 {
-  options."sumi-de".extraAutostart = lib.mkOption {
-    type        = lib.types.listOf lib.types.str;
-    default     = [];
-    description = ''
-      Commands appended to the autostart section of the river init.
-      Each entry is a complete shell command (include & if you want it
-      backgrounded, e.g. "fcitx5 --replace -d &").
-    '';
+  options."sumi-de" = {
+    editor = lib.mkOption {
+      type        = lib.types.str;
+      default     = "nano";
+      description = "Editor command used by the scratch buffer keybindings (Super+I / Super+Shift+I).";
+    };
+
+    browser = lib.mkOption {
+      type        = lib.types.str;
+      default     = "firefox";
+      description = "Browser command launched by Super+B.";
+    };
+
+    extraAutostart = lib.mkOption {
+      type        = lib.types.listOf lib.types.str;
+      default     = [];
+      description = ''
+        Commands appended to the autostart section of the river init.
+        Each entry is a complete shell command (include & if you want it
+        backgrounded, e.g. "fcitx5 --replace -d &").
+      '';
+    };
   };
 
   config = {
     home.packages = [ pkgs.river-classic ];
 
     xdg.configFile."river/init" = {
-      source     = ./scripts/init.sh;
+      text = builtins.replaceStrings
+        [ "spawn firefox" ]
+        [ "spawn ${cfg.browser}" ]
+        (builtins.readFile ./scripts/init.sh);
       executable = true;
     };
 
@@ -28,12 +45,24 @@ in
     };
 
     xdg.configFile."river/scripts/editor-insert.sh" = {
-      source     = ./scripts/editor-insert.sh;
+      text = ''
+        #!/usr/bin/env bash
+        tmp=$(mktemp --suffix=.txt)
+        foot -- ${cfg.editor} "$tmp"
+        [ -s "$tmp" ] && wtype - < "$tmp"
+        rm -f "$tmp"
+      '';
       executable = true;
     };
 
     xdg.configFile."river/scripts/editor-copy.sh" = {
-      source     = ./scripts/editor-copy.sh;
+      text = ''
+        #!/usr/bin/env bash
+        tmp=$(mktemp --suffix=.txt)
+        foot -- ${cfg.editor} "$tmp"
+        [ -s "$tmp" ] && wl-copy < "$tmp"
+        rm -f "$tmp"
+      '';
       executable = true;
     };
   };
