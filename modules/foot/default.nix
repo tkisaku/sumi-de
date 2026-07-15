@@ -1,14 +1,10 @@
-{ ... }:
+{ sumiFont, ... }:
 {
   programs.foot = {
     enable = true;
     settings = {
       main = {
-        font = "monospace:size=12";
-      };
-
-      cursor = {
-        color = "1f2335 c0caf5";
+        font = "${sumiFont.name}:size=${toString sumiFont.size}";
       };
 
       colors = {
@@ -36,6 +32,8 @@
 
         selection-background = "3b4261";
         selection-foreground = "c0caf5";
+
+        cursor = "1f2335 c0caf5";
       };
     };
   };

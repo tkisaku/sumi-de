@@ -1,6 +1,9 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
+    ## Fonts
+    nerd-fonts.jetbrains-mono
+
     ## Wayland utilities
     grim        # screenshot (region via slurp)
     slurp       # region selector

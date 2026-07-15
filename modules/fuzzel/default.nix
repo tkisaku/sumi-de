@@ -1,10 +1,10 @@
-{ ... }:
+{ sumiFont, ... }:
 {
   programs.fuzzel = {
     enable = true;
     settings = {
       main = {
-        font = "monospace:size=12";
+        font = "${sumiFont.name}:size=${toString sumiFont.size}";
         terminal = "foot -e";
         layer = "overlay";
         exit-on-keyboard-focus-loss = true;
