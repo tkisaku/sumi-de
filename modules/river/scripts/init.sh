@@ -12,7 +12,7 @@ RIVER_SCRIPTS="${XDG_CONFIG_HOME:-$HOME/.config}/river/scripts"
 
 riverctl map normal $MOD Return  spawn foot
 riverctl map normal $MOD Space   spawn fuzzel
-riverctl map normal $MOD B       spawn firefox
+riverctl map normal $MOD B       spawn "$RIVER_SCRIPTS/focus-or-spawn.sh BROWSER_APP_ID BROWSER_CMD"
 riverctl map normal $MOD I       spawn "$RIVER_SCRIPTS/editor-copy-float.sh"
 riverctl map normal $MOD V       spawn 'cliphist list | fuzzel --dmenu | cliphist decode | wl-copy'
 

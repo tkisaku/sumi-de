@@ -15,10 +15,16 @@ in
       description = "Editor command used by Super+I floating scratch buffer.";
     };
 
-    browser = lib.mkOption {
+    browserLaunchCmd = lib.mkOption {
       type = lib.types.str;
-      default = "firefox";
-      description = "Browser command launched by Super+B.";
+      example = "firefox";
+      description = "Browser command launched by Super+B. Must be set by the caller.";
+    };
+
+    browserAppId = lib.mkOption {
+      type = lib.types.str;
+      example = "firefox";
+      description = "Wayland app_id used to focus an existing browser window (wlrctl toplevel focus app_id:…). Must be set by the caller.";
     };
 
     extraAutostart = lib.mkOption {
@@ -35,7 +41,17 @@ in
       enable = lib.mkOption {
         type = lib.types.bool;
         default = true;
-        description = "Enable automatic colour-temperature adjustment (gammastep + geoclue2).";
+        description = "Enable automatic colour-temperature adjustment (wlsunset).";
+      };
+      sunriseTime = lib.mkOption {
+        type = lib.types.str;
+        default = "07:00";
+        description = "Time of sunrise in HH:MM format.";
+      };
+      sunsetTime = lib.mkOption {
+        type = lib.types.str;
+        default = "19:00";
+        description = "Time of sunset in HH:MM format.";
       };
       temperatureDay = lib.mkOption {
         type = lib.types.int;
@@ -51,25 +67,34 @@ in
   };
 
   config = {
-    home.packages = [ pkgs.river-classic ];
-
-    services.gammastep = lib.mkIf cfg.sunsetMode.enable {
-      enable = true;
-      provider = "geoclue2";
-      temperature = {
-        day = cfg.sunsetMode.temperatureDay;
-        night = cfg.sunsetMode.temperatureNight;
-      };
-    };
+    home.packages = [ pkgs.river-classic pkgs.wlrctl ] ++ lib.optional cfg.sunsetMode.enable pkgs.wlsunset;
 
     xdg.configFile."river/init" = {
       text =
-        builtins.replaceStrings [ "spawn firefox" ] [ "spawn ${cfg.browser}" ] (
-          builtins.readFile ./scripts/init.sh
-        )
+        builtins.replaceStrings
+          [ "BROWSER_APP_ID" "BROWSER_CMD" ]
+          [ cfg.browserAppId cfg.browserLaunchCmd ]
+          (builtins.readFile ./scripts/init.sh)
         + lib.optionalString cfg.sunsetMode.enable ''
-          riverctl map normal $MOD+Shift N spawn 'pkill -SIGUSR1 gammastep'
+          riverctl map normal $MOD+Shift N spawn "$RIVER_SCRIPTS/sunset-toggle.sh"
         '';
+      executable = true;
+    };
+
+    xdg.configFile."river/scripts/focus-or-spawn.sh" = {
+      source = ./scripts/focus-or-spawn.sh;
+      executable = true;
+    };
+
+    xdg.configFile."river/scripts/sunset-toggle.sh" = lib.mkIf cfg.sunsetMode.enable {
+      text = ''
+        #!/usr/bin/env bash
+        if pgrep -x wlsunset > /dev/null; then
+          pkill -x wlsunset
+        else
+          wlsunset -S ${cfg.sunsetMode.sunriseTime} -s ${cfg.sunsetMode.sunsetTime} -T ${toString cfg.sunsetMode.temperatureDay} -t ${toString cfg.sunsetMode.temperatureNight} &
+        fi
+      '';
       executable = true;
     };
 
@@ -85,6 +110,9 @@ in
     xdg.configFile."river/autostart.sh" = {
       text =
         (builtins.readFile ./scripts/autostart.sh)
+        + lib.optionalString cfg.sunsetMode.enable ''
+          wlsunset -S ${cfg.sunsetMode.sunriseTime} -s ${cfg.sunsetMode.sunsetTime} -T ${toString cfg.sunsetMode.temperatureDay} -t ${toString cfg.sunsetMode.temperatureNight} &
+        ''
         + lib.concatMapStrings (cmd: "${cmd}\n") cfg.extraAutostart;
       executable = true;
     };

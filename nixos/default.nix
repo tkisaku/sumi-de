@@ -11,5 +11,4 @@
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
 
-  services.geoclue2.enable = true; # required for sunsetMode location detection
 }

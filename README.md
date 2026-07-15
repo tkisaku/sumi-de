@@ -36,21 +36,23 @@ All options live under the `sumi-de` namespace in Home Manager.
 | Option | Type | Default | Description |
 |---|---|---|---|
 | `sumi-de.extraAutostart` | `listOf str` | `[]` | Commands appended to the river autostart. Each entry is a full shell command — include `&` to background it. |
-| `sumi-de.sunsetMode.enable` | `bool` | `true` | Enable automatic colour-temperature adjustment (gammastep + geoclue2). Location is detected automatically; no coordinates needed. |
+| `sumi-de.sunsetMode.enable` | `bool` | `true` | Enable automatic colour-temperature adjustment (wlsunset). |
+| `sumi-de.sunsetMode.sunriseTime` | `str` | `"07:00"` | Sunrise time in HH:MM format. |
+| `sumi-de.sunsetMode.sunsetTime` | `str` | `"19:00"` | Sunset time in HH:MM format. |
 | `sumi-de.sunsetMode.temperatureDay` | `int` | `6500` | Colour temperature during the day (Kelvin). |
 | `sumi-de.sunsetMode.temperatureNight` | `int` | `3500` | Colour temperature at night (Kelvin). |
 
 ## Examples
 
-### Sunset mode (gammastep)
+### Sunset mode (wlsunset)
 
-Location is detected automatically via geoclue2 — no coordinates needed.
-Also add `sumi-de.nixosModules.default` to your NixOS config to enable the geoclue2 service.
+On by default. No internet or location service required — just set your local sunrise/sunset times.
 
 ```nix
 "sumi-de".sunsetMode = {
-  enable = true;
-  # temperatureDay   = 6500;  # optional, Kelvin
+  sunriseTime = "06:30";  # optional, default "07:00"
+  sunsetTime  = "20:00";  # optional, default "19:00"
+  # temperatureDay   = 6500;
   # temperatureNight = 3500;
 };
 ```
