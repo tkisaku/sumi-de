@@ -30,15 +30,46 @@ in
         backgrounded, e.g. "fcitx5 --replace -d &").
       '';
     };
+
+    sunsetMode = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Enable automatic colour-temperature adjustment (gammastep + geoclue2).";
+      };
+      temperatureDay = lib.mkOption {
+        type = lib.types.int;
+        default = 6500;
+        description = "Colour temperature during the day (Kelvin).";
+      };
+      temperatureNight = lib.mkOption {
+        type = lib.types.int;
+        default = 3500;
+        description = "Colour temperature at night (Kelvin).";
+      };
+    };
   };
 
   config = {
     home.packages = [ pkgs.river-classic ];
 
+    services.gammastep = lib.mkIf cfg.sunsetMode.enable {
+      enable = true;
+      provider = "geoclue2";
+      temperature = {
+        day = cfg.sunsetMode.temperatureDay;
+        night = cfg.sunsetMode.temperatureNight;
+      };
+    };
+
     xdg.configFile."river/init" = {
-      text = builtins.replaceStrings [ "spawn firefox" ] [ "spawn ${cfg.browser}" ] (
-        builtins.readFile ./scripts/init.sh
-      );
+      text =
+        builtins.replaceStrings [ "spawn firefox" ] [ "spawn ${cfg.browser}" ] (
+          builtins.readFile ./scripts/init.sh
+        )
+        + lib.optionalString cfg.sunsetMode.enable ''
+          riverctl map normal $MOD+Shift N spawn 'pkill -SIGUSR1 gammastep'
+        '';
       executable = true;
     };
 
