@@ -23,8 +23,8 @@ in
 
     browserAppId = lib.mkOption {
       type = lib.types.str;
-      example = "firefox";
-      description = "Wayland app_id used to focus an existing browser window (wlrctl toplevel focus app_id:…). Must be set by the caller.";
+      default = cfg.browserLaunchCmd;
+      description = "Wayland app_id used to focus an existing browser window. Defaults to the first word of browserLaunchCmd; override when they differ (e.g. google-chrome-stable → google-chrome).";
     };
 
     extraAutostart = lib.mkOption {
