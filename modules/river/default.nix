@@ -60,20 +60,22 @@ in
       };
       temperatureNight = lib.mkOption {
         type = lib.types.int;
-        default = 3500;
+        default = 0;
         description = "Colour temperature at night (Kelvin).";
       };
     };
   };
 
   config = {
-    home.packages = [ pkgs.river-classic pkgs.wlrctl ] ++ lib.optional cfg.sunsetMode.enable pkgs.wlsunset;
+    home.packages = [
+      pkgs.river-classic
+      pkgs.wlrctl
+    ]
+    ++ lib.optional cfg.sunsetMode.enable pkgs.wlsunset;
 
     xdg.configFile."river/init" = {
       text =
-        builtins.replaceStrings
-          [ "BROWSER_APP_ID" "BROWSER_CMD" ]
-          [ cfg.browserAppId cfg.browserLaunchCmd ]
+        builtins.replaceStrings [ "BROWSER_APP_ID" "BROWSER_CMD" ] [ cfg.browserAppId cfg.browserLaunchCmd ]
           (builtins.readFile ./scripts/init.sh)
         + lib.optionalString cfg.sunsetMode.enable ''
           riverctl map normal $MOD+Shift N spawn "$RIVER_SCRIPTS/sunset-toggle.sh"
