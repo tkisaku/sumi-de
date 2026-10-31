@@ -7,7 +7,8 @@
         font = "${sumiFont.name}:size=${toString sumiFont.size}";
       };
 
-      colors = {
+      # foot >= 1.28 removed [colors]; use [colors-dark]
+      colors-dark = {
         # Tokyo Night Storm
         background = "1f2335";
         foreground = "c0caf5";
