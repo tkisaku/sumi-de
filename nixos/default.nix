@@ -1,9 +1,6 @@
 { pkgs, ... }:
 {
-  programs.river = {
-    enable = true;
-    package = pkgs.river-classic;
-  };
+  programs.river-classic.enable = true;
 
   xdg.portal = {
     enable = true;
