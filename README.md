@@ -79,9 +79,10 @@ On by default. No internet or location service required — just set your local 
 
 | Key | Action |
 |---|---|
-| `Super + Return` | Terminal (foot) |
 | `Super + Space` | Launcher (fuzzel) — `Return` focuses the app if already running, `Shift + Return` always launches a new one |
 | `Super + B` | Browser (focuses it if already running, on any workspace) |
+| `Super + T` | Terminal (foot + zellij) — focuses it if already running, on any workspace |
+| `Super + Shift + T` | New terminal (plain foot) |
 | `Super + V` | Clipboard history |
 | `Super + Q` | Close window |
 | `Super + F` | Toggle fullscreen |
