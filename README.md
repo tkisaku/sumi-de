@@ -1,8 +1,8 @@
 # 墨 de
 
-Minimal Wayland desktop environment built on [river](https://codeberg.org/river/river).
+Minimal Wayland desktop environment built on [sway](https://swaywm.org).
 
-**Includes:** river · waybar · foot · fuzzel · mako · cliphist
+**Includes:** sway · waybar · foot · fuzzel · mako · cliphist
 
 ## Usage
 
@@ -18,7 +18,7 @@ Minimal Wayland desktop environment built on [river](https://codeberg.org/river/
   outputs = { nixpkgs, home-manager, sumi-de, ... }: {
     nixosConfigurations.host = nixpkgs.lib.nixosSystem {
       modules = [
-        sumi-de.nixosModules.default          # registers river in the display manager session list
+        sumi-de.nixosModules.default          # registers sway in the display manager session list
         home-manager.nixosModules.homeManager
         {
           home-manager.users.alice.imports = [ sumi-de.homeManagerModules.default ];
@@ -35,7 +35,7 @@ All options live under the `sumi-de` namespace in Home Manager.
 
 | Option | Type | Default | Description |
 |---|---|---|---|
-| `sumi-de.extraAutostart` | `listOf str` | `[]` | Commands appended to the river autostart. Each entry is a full shell command — include `&` to background it. |
+| `sumi-de.extraAutostart` | `listOf str` | `[]` | Commands appended to the sway autostart. Each entry is a full shell command — include `&` to background it. |
 | `sumi-de.sunsetMode.enable` | `bool` | `true` | Enable automatic colour-temperature adjustment (wlsunset). |
 | `sumi-de.sunsetMode.sunriseTime` | `str` | `"07:00"` | Sunrise time in HH:MM format. |
 | `sumi-de.sunsetMode.sunsetTime` | `str` | `"19:00"` | Sunset time in HH:MM format. |
@@ -80,20 +80,18 @@ On by default. No internet or location service required — just set your local 
 | Key | Action |
 |---|---|
 | `Super + Return` | Terminal (foot) |
-| `Super + Space` | Launcher (fuzzel) |
-| `Super + B` | Browser (firefox) |
+| `Super + Space` | Launcher (fuzzel) — `Return` focuses the app if already running, `Shift + Return` always launches a new one |
+| `Super + B` | Browser (focuses it if already running, on any workspace) |
 | `Super + V` | Clipboard history |
 | `Super + Q` | Close window |
 | `Super + F` | Toggle fullscreen |
 | `Super + Shift + Space` | Toggle float |
 | `Super + J / K` | Focus next / previous |
-| `Super + Shift + J / K` | Swap next / previous |
-| `Super + H / L` | Shrink / grow main pane |
-| `Super + Shift + H / L` | Decrease / increase main count |
-| `Super + 1–9` | Switch to tag |
-| `Super + Shift + 1–9` | Move window to tag |
-| `Super + 0` | Show all tags |
-| `Super + Shift + E` | Exit river |
+| `Super + H / L` | Focus left / right |
+| `Super + Shift + H / J / K / L` | Move window left / down / up / right |
+| `Super + 1–9` | Switch to workspace |
+| `Super + Shift + 1–9` | Move window to workspace |
+| `Super + Shift + E` | Exit sway |
 | `Print` | Screenshot selection → clipboard |
 | `Super + Print` | Screenshot full screen → clipboard |
 | `Super + Shift + N` | Toggle sunset mode on/off (when sunsetMode.enable = true) |

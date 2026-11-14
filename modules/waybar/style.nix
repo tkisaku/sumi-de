@@ -16,22 +16,22 @@
     border-bottom: 1px solid #3b4261;
   }
 
-  /* ── tags ─────────────────────────────────────────────────── */
-  #tags button {
+  /* ── workspaces ───────────────────────────────────────────── */
+  #workspaces button {
     padding: 0 8px;
     color: #3b4261;
   }
 
-  #tags button.focused {
+  #workspaces button.focused {
     color: #c0caf5;
     border-bottom: 2px solid #7aa2f7;
   }
 
-  #tags button.occupied {
+  #workspaces button.visible {
     color: #565f89;
   }
 
-  #tags button.urgent {
+  #workspaces button.urgent {
     color: #f7768e;
   }
 

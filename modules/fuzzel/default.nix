@@ -24,6 +24,11 @@
         width = 2;
         radius = 4;
       };
+      # Shift+Return = always launch a new instance (see sway/scripts/fuzzel-focus-or-spawn.sh)
+      key-bindings = {
+        execute-input = "none";
+        custom-1 = "Shift+Return Shift+KP_Enter";
+      };
     };
   };
 }

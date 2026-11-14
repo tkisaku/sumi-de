@@ -7,7 +7,7 @@
 
   imports = [
     ./packages.nix
-    ./river
+    ./sway
     ./foot
     ./fuzzel
     ./waybar

@@ -31,7 +31,7 @@ in
       type = lib.types.listOf lib.types.str;
       default = [ ];
       description = ''
-        Commands appended to the autostart section of the river init.
+        Commands appended to the sway autostart script.
         Each entry is a complete shell command (include & if you want it
         backgrounded, e.g. "fcitx5 --replace -d &").
       '';
@@ -67,28 +67,26 @@ in
   };
 
   config = {
-    home.packages = [
-      pkgs.river-classic
-      pkgs.wlrctl
-    ]
-    ++ lib.optional cfg.sunsetMode.enable pkgs.wlsunset;
+    home.packages = lib.optional cfg.sunsetMode.enable pkgs.wlsunset;
 
-    xdg.configFile."river/init" = {
-      text =
-        builtins.replaceStrings [ "BROWSER_APP_ID" "BROWSER_CMD" ] [ cfg.browserAppId cfg.browserLaunchCmd ]
-          (builtins.readFile ./scripts/init.sh)
-        + lib.optionalString cfg.sunsetMode.enable ''
-          riverctl map normal $MOD+Shift N spawn "$RIVER_SCRIPTS/sunset-toggle.sh"
-        '';
-      executable = true;
-    };
+    xdg.configFile."sway/config".text =
+      builtins.replaceStrings [ "BROWSER_APP_ID" "BROWSER_CMD" ] [ cfg.browserAppId cfg.browserLaunchCmd ]
+        (builtins.readFile ./config)
+      + lib.optionalString cfg.sunsetMode.enable ''
+        bindsym $mod+Shift+n exec $scripts/sunset-toggle.sh
+      '';
 
-    xdg.configFile."river/scripts/focus-or-spawn.sh" = {
+    xdg.configFile."sway/scripts/focus-or-spawn.sh" = {
       source = ./scripts/focus-or-spawn.sh;
       executable = true;
     };
 
-    xdg.configFile."river/scripts/sunset-toggle.sh" = lib.mkIf cfg.sunsetMode.enable {
+    xdg.configFile."sway/scripts/fuzzel-focus-or-spawn.sh" = {
+      source = ./scripts/fuzzel-focus-or-spawn.sh;
+      executable = true;
+    };
+
+    xdg.configFile."sway/scripts/sunset-toggle.sh" = lib.mkIf cfg.sunsetMode.enable {
       text = ''
         #!/usr/bin/env bash
         if pgrep -x wlsunset > /dev/null; then
@@ -100,7 +98,7 @@ in
       executable = true;
     };
 
-    xdg.configFile."river/scripts/editor-copy-float.sh" = {
+    xdg.configFile."sway/scripts/editor-copy-float.sh" = {
       text =
         builtins.replaceStrings
           [ "foot --app-id floating-editor -- $EDITOR" ]
@@ -109,7 +107,7 @@ in
       executable = true;
     };
 
-    xdg.configFile."river/autostart.sh" = {
+    xdg.configFile."sway/autostart.sh" = {
       text =
         (builtins.readFile ./scripts/autostart.sh)
         + lib.optionalString cfg.sunsetMode.enable ''

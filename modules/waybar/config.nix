@@ -5,12 +5,12 @@
     height = 28;
     spacing = 4;
 
-    modules-left = [ "river/tags" ];
+    modules-left = [ "sway/workspaces" ];
     modules-center = [ "clock" ];
     modules-right = [ "pulseaudio" "battery" ];
 
-    "river/tags" = {
-      num-tags = 9;
+    "sway/workspaces" = {
+      disable-scroll = true;
     };
 
     clock = {
