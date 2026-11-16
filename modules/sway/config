@@ -6,9 +6,9 @@ floating_modifier $mod normal
 set $scripts ~/.config/sway/scripts
 
 bindsym $mod+space exec $scripts/fuzzel-focus-or-spawn.sh
-bindsym $mod+b exec $scripts/focus-or-spawn.sh BROWSER_APP_ID BROWSER_CMD
-bindsym $mod+t exec $scripts/focus-or-spawn.sh foot foot zellij
-bindsym $mod+Shift+t exec foot
+bindsym $mod+a exec $scripts/focus-or-spawn.sh BROWSER_APP_ID BROWSER_CMD
+bindsym $mod+s exec $scripts/focus-or-spawn.sh foot foot zellij
+bindsym $mod+Shift+s exec foot
 bindsym $mod+i exec $scripts/editor-copy-float.sh
 bindsym $mod+v exec 'cliphist list | fuzzel --dmenu | cliphist decode | wl-copy'
 

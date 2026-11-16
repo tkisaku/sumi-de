@@ -18,7 +18,7 @@ in
     browserLaunchCmd = lib.mkOption {
       type = lib.types.str;
       example = "firefox";
-      description = "Browser command launched by Super+B. Must be set by the caller.";
+      description = "Browser command launched by Super+A. Must be set by the caller.";
     };
 
     browserAppId = lib.mkOption {
